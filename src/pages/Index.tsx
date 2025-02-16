@@ -6,6 +6,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import InventoryTable from "@/components/InventoryTable";
 import QRCodeGenerator from "@/components/QRCodeGenerator";
 import MLDataReceiver from "@/components/MLDataReceiver";
+import Invoice from "@/components/Invoice";
 import { useToast } from "@/components/ui/use-toast";
 
 export type Product = {
@@ -19,6 +20,7 @@ export type Product = {
 
 const Index = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [showPrintView, setShowPrintView] = useState(false);
   const { toast } = useToast();
 
   const handleMLData = (data: any) => {
@@ -38,6 +40,18 @@ const Index = () => {
     }
   };
 
+  const handlePrint = () => {
+    setShowPrintView(true);
+    setTimeout(() => {
+      window.print();
+      setShowPrintView(false);
+    }, 100);
+  };
+
+  if (showPrintView) {
+    return <Invoice products={products} />;
+  }
+
   return (
     <DashboardLayout>
       <div className="container px-4 py-8 mx-auto space-y-8 animate-fade-in">
@@ -46,7 +60,7 @@ const Index = () => {
             <h1 className="text-4xl font-bold text-gray-900">Inventory Management</h1>
             <p className="mt-2 text-gray-600">Monitor your products and expiry dates</p>
           </div>
-          <Button variant="outline" onClick={() => window.print()} className="print:hidden">
+          <Button variant="outline" onClick={handlePrint} className="print:hidden">
             Generate Invoice
           </Button>
         </div>

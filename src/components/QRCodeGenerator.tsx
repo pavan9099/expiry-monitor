@@ -7,6 +7,7 @@ const QRCodeGenerator = ({ products }: { products: Product[] }) => {
   const qrData = JSON.stringify(
     products.map((p) => ({
       id: p.id,
+      manufacturingDate: p.manufacturingDate,
       expiryDate: p.expiryDate,
     }))
   );
